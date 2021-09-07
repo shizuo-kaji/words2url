@@ -1,0 +1,44 @@
+{% extends 'wordb/base.html' %}
+
+{% block content %}
+{% if bought_words %}
+   <h3> Thanks for buying "{{bought_words}}"</h3>
+{% endif %}
+
+<br>
+<div class="mainbox" style="text-align:center;">
+       <form action="" method="get">
+        <input name="query" value="{{ request.GET.query }}" type="text" placeholder="apple juice">
+        <button type="submit" class="btn-square-pop">Search!</button>
+    </form>
+</div>
+    <br>
+
+    <h3>for testing</h3>
+    <ul>
+    <li>Type "@list" to show all DB entries</li>
+    </ul>
+    
+{% if object_list %}
+    <h3>Entries found</h3>
+    <table border="1">
+        <tr>
+            <th>Words</th>
+            <th>Data</th>
+            <th>Owner</th>
+            <th>Begin date</th>
+            <th>Expire date</th>
+        </tr>
+        {% for item in object_list %}
+        <tr>
+            <td>{{ item.words_text }}</td>
+            <td>{{ item.data_text }}</td>
+            <td>{{ item.owner }}</td>
+            <td>{{ item.begin_date }}</td>
+            <td>{{ item.end_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% endblock content %}

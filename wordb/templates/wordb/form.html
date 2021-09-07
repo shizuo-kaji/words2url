@@ -1,0 +1,23 @@
+{% extends 'wordb/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if words %}
+   <h3> "{{words}}" is not found in the DB.</h3>
+{% endif %}
+{% if taken_till %}
+   <h3> "{{form.words_text.value}}" is already taken
+   until {{taken_till}}</h3>
+{% endif %}
+<div class="entry_input">
+ <h2 class="mt-2">Do you want to buy the words?</h2>
+  <ul>
+<li>Valid from: {{form.begin_date.value}}</li>
+</ul>
+  <form method="POST">
+    {% csrf_token %}
+   {{ form|crispy }}    
+    <button type="submit" class="btn btn-success">Proceed to payment</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+                            <form id = "form-id" action="{% url 'edit' %}" method="post">
+                            {% csrf_token %}
+                            <input name="session.editkey" value="{{ item.editkey }}" type="hidden">
+                            <input name="pk" value="{{ item.pk }}" type="hidden">
+                            <a href="#" class="btn btn-outline-secondary " onclick="document.forms['form-id'].submit();" > Edit </a> 
+                            </form>
