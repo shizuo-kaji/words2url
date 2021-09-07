@@ -2,14 +2,14 @@
 
 {% block content %}
 {% if bought_words %}
-   <h3> Thanks for buying "{{bought_words}}"</h3>
+ <h2 class="mt-2">Thanks for buying "{{bought_words}}"</h2>
 {% endif %}
 
 <br>
 <div class="mainbox" style="text-align:center;">
        <form action="" method="get">
         <input name="query" value="{{ request.GET.query }}" type="text" placeholder="apple juice">
-        <button type="submit" class="btn-square-pop">Search!</button>
+        <button type="submit" class="btn btn-success">Search!</button>
     </form>
 </div>
     <br>

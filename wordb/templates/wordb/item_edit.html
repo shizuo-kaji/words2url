@@ -4,14 +4,14 @@
 {% block content %}
  <h2 class="mt-2">Edit entry for "{{item.words_text}}"</h2>
 <div class="entry_input">
-  <form method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit">Proceed to payment</button>
-  </form>
   <ul>
 <li>Valid from: {{item.begin_date}}</li>
 <li>Valid until: {{item.end_date}}</li>
 </ul>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Proceed to payment</button>
+  </form>
 </div>
 {% endblock %}

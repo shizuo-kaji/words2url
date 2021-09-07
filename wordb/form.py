@@ -28,7 +28,7 @@ class ItemEditForm(ModelForm):
     class Meta:
         model = Item
         #fields = '__all__'
-        fields = ['words_text','data_text','owner','editkey','length']
+        fields = ['data_text','owner','editkey','length']
         #fields = ['words_text','data_text','editkey']
         exclude = ()
         widgets = {
