@@ -5,7 +5,7 @@ from django.db import models
 class Item(models.Model):
     owner = models.CharField(max_length=200, default="nobody")
     words_text = models.CharField(max_length=200)
-    data_text = models.CharField(max_length=200)
+    data_text = models.CharField(max_length=1000)
     editkey = models.CharField(max_length=200, default="dummy")
     begin_date = models.DateTimeField('commencement date')
     end_date = models.DateTimeField('expiration date')

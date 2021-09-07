@@ -163,8 +163,10 @@ def index(request):
         return render(request, 'wordb/item_list.html', {'object_list':object_list})
     elif len(object_list)==1: # hit
         item = object_list[0]
-        if "http" in item.data_text:
+        if item.data_text.startswith("http"):
             return redirect(item.data_text)
+        else:
+            return HttpResponse(item.data_text)
             
     return render(request, 'wordb/item_list.html', {'object_list':object_list})
 
