@@ -103,7 +103,7 @@ def ask(request):
                     messages.error(request, 'Something is wrong with the dates')
                     return redirect('/')
                 post.save()
-                messages.success(request, 'Thanks for your purchase')
+                messages.success(request, 'successfully registered "{}"'.format(post.words_text))
                 return redirect('/')
     else:
         init_params = {'words_text': words,
@@ -152,7 +152,10 @@ def edit(request, pk):
     return redirect('update')
 
 def about(request):
-        return render(request, 'wordb/about.html')
+    if request.method == 'POST':
+        if request.POST.get('stripeToken'):
+            messages.success(request, 'Thank you for your support!')
+    return render(request, 'wordb/about.html')
     
 def index(request):
     q_word = request.GET.get('query')

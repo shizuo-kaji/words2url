@@ -19,7 +19,7 @@ class ItemForm(ModelForm):
             'data_text': TextInput(attrs={'size':'40', 'title': 'Data'}),   #attrs={'row': 1, 'maxlength': 200}),
             'owner': TextInput(attrs={'size':'40'}),
             #'begin_date': widgets.DateInput(attrs={'type': 'date'}),
-            'begin_date': widgets.SplitHiddenDateTimeWidget(),
+            'begin_date': widgets.HiddenInput(),
             #'end_date': widgets.SplitHiddenDateTimeWidget(),
             'length': widgets.Select(attrs={'label': "Duration"}),
             #'end_date': CharField(disabled=True),
