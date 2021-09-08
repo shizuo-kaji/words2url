@@ -17,7 +17,9 @@ class MyCharFilter(filters.CharFilter):
 class MyOrderingFilter(filters.OrderingFilter):
     descending_fmt = '%s (descending)'
 
-class ItemFilter(FilterSet):
+class ItemFilterEditkey(FilterSet):
+    template_name = "item_filter.html"
+
     words_text = filters.CharFilter(label='Words', lookup_expr='contains')
     data_text = filters.CharFilter(label='Data', lookup_expr='contains')
     owner = filters.CharFilter(label='Owner', lookup_expr='contains')
@@ -39,7 +41,27 @@ class ItemFilter(FilterSet):
         fields = ('editkey','words_text','data_text','owner')
 
     def __init__(self, *args, **kwargs):
-        super(ItemFilter, self).__init__(*args, **kwargs)
+        super(ItemFilterEditkey, self).__init__(*args, **kwargs)
         # at sturtup user doen't push Submit button, and QueryDict (in data) is empty
         if self.data == {}:
             self.queryset = self.queryset.none()
+
+class ItemFilter(FilterSet):
+    words_text = filters.CharFilter(label='Words', lookup_expr='contains')
+    data_text = filters.CharFilter(label='Data', lookup_expr='contains')
+    owner = filters.CharFilter(label='Owner', lookup_expr='contains')
+    order_by = MyOrderingFilter(
+        fields=(
+            ('words_text', 'words_text'),
+            ('data_text', 'data_text'),
+        ),
+        field_labels={
+            'words_text': 'words',
+            'data_text': 'data',
+        },
+        label='sorting order'
+    )
+
+    class Meta:
+        model = Item
+        fields = ('words_text','data_text','owner')

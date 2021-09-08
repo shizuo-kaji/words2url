@@ -14,7 +14,7 @@ import datetime
 from urllib.parse import urlencode
 import string,secrets
 
-from .filters import ItemFilter
+from .filters import ItemFilter, ItemFilterEditkey
 from .models import Item
 from .form import ItemForm, ItemEditForm
 
@@ -34,9 +34,10 @@ class ItemUpdateView(UpdateView): # LoginRequiredMixin #NOT_USED_YET
         return reverse("index", kwargs={"pk": self.object.pk})
 
 
-class ItemFilterView(FilterView):
+# not allowing empty editkey
+class ItemFilterEditkeyView(FilterView):
     model = Item
-    filterset_class = ItemFilter
+    filterset_class = ItemFilterEditkey
     queryset = Item.objects.all().order_by('-end_date')
 
     strict = True  ## empty query return all objects
@@ -51,6 +52,25 @@ class ItemFilterView(FilterView):
                 for key in request.session['query'].keys():
                     request.GET[key] = request.session['query'][key]
 
+        return super().get(request, **kwargs)
+
+class ItemFilterView(FilterView):
+    model = Item
+    filterset_class = ItemFilter
+    queryset = Item.objects.filter(Q(end_date__gte=timezone.now())).order_by('-end_date')
+    template_name = "wordb/item_list.html"
+
+    strict = False  ## empty query return all objects
+    paginate_by = 10
+    
+    def get(self, request, **kwargs):
+        if request.GET: # save session
+            request.session['query'] = request.GET
+        else: # load session
+            request.GET = request.GET.copy()
+            if 'query' in request.session.keys():
+                for key in request.session['query'].keys():
+                    request.GET[key] = request.session['query'][key]
         return super().get(request, **kwargs)
 
 
@@ -77,6 +97,8 @@ def ask(request):
                     post.end_date = post.begin_date + datetime.timedelta(weeks=1)
                 elif post.length==3:
                     post.end_date = post.begin_date + datetime.timedelta(days=31)
+                elif post.length==4:
+                    post.end_date = post.begin_date + datetime.timedelta(days=365)
                 else:
                     messages.error(request, 'Something is wrong with the dates')
                     return redirect('/')
@@ -103,7 +125,7 @@ def edit(request, pk):
     print(pk,item,request.method)
     if editkey != item.editkey:
         messages.error(request, 'wrong editkey')
-        return redirect('itemlist')
+        return redirect('update')
     elif request.method == 'POST': # update
         form = ItemEditForm(request.POST, instance=item)
         if form.is_valid():
@@ -116,16 +138,17 @@ def edit(request, pk):
                 post.end_date = post.end_date + datetime.timedelta(weeks=1)
             elif post.length==3:
                 post.end_date = post.end_date + datetime.timedelta(days=31)
+            elif post.length==4:
+                post.end_date = post.end_date + datetime.timedelta(days=365)
             post.save()
             messages.success(request, 'Your Words are successfully updated!')
             return redirect('/')
-            #return render(request, 'wordb/item_list.html', {'object_list':[form],'bought_words':post.words_text})
     else:
         form = ItemEditForm(instance=item , initial={'length': 0})
         print(form.instance.begin_date)
         return render(request, 'wordb/item_edit.html', {'form': form, 'item':item})
 
-    return redirect('itemlist')
+    return redirect('update')
 
 
 def index(request):
@@ -134,7 +157,7 @@ def index(request):
         request.session.pop('query','') # clear search key
     #print(q_word)
     if not q_word:
-        return render(request, 'wordb/item_list.html', {'object_list':[]})
+        return render(request, 'wordb/item_index.html', {'object_list':[]})
     q_word = q_word.split()
     flags = dict()
     words = []
@@ -148,13 +171,15 @@ def index(request):
 
     #print("key: ",q_word)
     object_list = Item.objects.filter(Q(words_text__iexact=words) & Q(end_date__gte=timezone.now()))
-    if len(object_list)==0 and not 'list' in flags.keys():
+    if 'admin' in flags.keys():
+        return redirect('admin:index')
+    elif len(object_list)==0 and not 'list' in flags.keys():
         # redirect_url = reverse('ask')
         # parameters = urlencode({'words': words})
         # url = f'{redirect_url}?{parameters}'
         # return(redirect(url))
         messages.error(request, '{} not found'.format(words))
-        return render(request, 'wordb/item_list.html', {'object_list':object_list, 'not_found_words': words})
+        return render(request, 'wordb/item_index.html', {'object_list':object_list, 'not_found_words': words})
     elif 'list' in flags.keys():
         object_list = Item.objects.filter(Q(words_text__icontains=words))
         #object_list = Item.objects.all()
@@ -168,12 +193,12 @@ def index(request):
         else:
             return HttpResponse(item.data_text)
             
-    return render(request, 'wordb/item_list.html', {'object_list':object_list})
+    return render(request, 'wordb/item_index.html', {'object_list':object_list})
 
 
 
 ##
-def dummy_add_key():
+def dummy_add_key(request):
     keywords = request.GET.get('words')
     if keywords:
         object_list = Item.objects.filter(Q(words_text__iexact=keywords))
@@ -195,6 +220,6 @@ def dummy_add_key():
                 end_date = timezone.now() + datetime.timedelta(days=1),
             )
             item.save()
-        return render(request, 'wordb/item_list.html', {'object_list':[item]})
+        return render(request, 'wordb/item_index.html', {'object_list':[item]})
         #return redirect("ask/")
         #return HttpResponse("Word {} updated.".format(words))

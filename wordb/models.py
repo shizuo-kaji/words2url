@@ -11,7 +11,7 @@ class Item(models.Model):
     end_date = models.DateTimeField('expiration date')
     count = models.PositiveIntegerField(default=0)
 
-    LENGTH_CATEGORY = ((0, 'none'), (1, 'day'),(2, 'week'), (3, 'month'))
+    LENGTH_CATEGORY = ((0, 'none'), (1, 'day'),(2, 'week'), (3, 'month'), (4, 'year'))
     length = models.IntegerField(choices=LENGTH_CATEGORY, default=0)
 
     class Meta:
