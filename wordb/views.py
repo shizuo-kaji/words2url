@@ -7,7 +7,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic import DetailView,ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.db.models import Q
+from django.db.models import Q,F
 from django_filters.views import FilterView
 from django.contrib import messages
 import datetime
@@ -121,7 +121,7 @@ def edit(request, pk):
             return redirect('/')
             #return render(request, 'wordb/item_list.html', {'object_list':[form],'bought_words':post.words_text})
     else:
-        form = ItemEditForm(instance=item) #, initial=init_params)
+        form = ItemEditForm(instance=item , initial={'length': 0})
         print(form.instance.begin_date)
         return render(request, 'wordb/item_edit.html', {'form': form, 'item':item})
 
@@ -136,15 +136,11 @@ def index(request):
     if not q_word:
         return render(request, 'wordb/item_list.html', {'object_list':[]})
     q_word = q_word.split()
-    ask_flag = False
-    list_flag = False
+    flags = dict()
     words = []
     for w in q_word:
         if w[0] == "@": # modifier
-            if "ask" in w:
-                ask_flag = True
-            elif "list" in w:
-                list_flag = True
+            flags[w[1:]] = True
         else:
             words.append(w)
 
@@ -152,17 +148,21 @@ def index(request):
 
     #print("key: ",q_word)
     object_list = Item.objects.filter(Q(words_text__iexact=words) & Q(end_date__gte=timezone.now()))
-    if len(object_list)==0 and not list_flag:
-        redirect_url = reverse('ask')
-        parameters = urlencode({'words': words})
-        url = f'{redirect_url}?{parameters}'
-        return(redirect(url))
-    elif list_flag:
+    if len(object_list)==0 and not 'list' in flags.keys():
+        # redirect_url = reverse('ask')
+        # parameters = urlencode({'words': words})
+        # url = f'{redirect_url}?{parameters}'
+        # return(redirect(url))
+        messages.error(request, '{} not found'.format(words))
+        return render(request, 'wordb/item_list.html', {'object_list':object_list, 'not_found_words': words})
+    elif 'list' in flags.keys():
         object_list = Item.objects.filter(Q(words_text__icontains=words))
         #object_list = Item.objects.all()
         return render(request, 'wordb/item_list.html', {'object_list':object_list})
-    elif len(object_list)==1: # hit
+    elif len(object_list)==1: # hit and show
         item = object_list[0]
+        item.count = F('count') + 1
+        item.save()
         if item.data_text.startswith("http"):
             return redirect(item.data_text)
         else:

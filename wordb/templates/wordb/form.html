@@ -11,13 +11,13 @@
 {% endif %}
 <div class="entry_input">
  <h2 class="mt-2">Do you want to buy the words?</h2>
-  <ul>
+  <ul class="list-group">
 <li>Valid from: {{form.begin_date.value}}</li>
 </ul>
   <form method="POST">
     {% csrf_token %}
    {{ form|crispy }}    
-    <button type="submit" class="btn btn-success">Proceed to payment</button>
+    <button type="submit" class="btn btn-success">Submit</button>
   </form>
 </div>
 {% endblock %}

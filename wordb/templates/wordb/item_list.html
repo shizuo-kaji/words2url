@@ -1,44 +1,65 @@
-{% extends 'wordb/base.html' %}
+{% extends './base.html' %}
 
 {% block content %}
+
 {% if bought_words %}
  <h2 class="mt-2">Thanks for buying "{{bought_words}}"</h2>
 {% endif %}
 
-<br>
-<div class="mainbox" style="text-align:center;">
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-sm-auto">
        <form action="" method="get">
         <input name="query" value="{{ request.GET.query }}" type="text" placeholder="apple juice">
         <button type="submit" class="btn btn-success">Search!</button>
     </form>
+    </div>
+{% if not_found_words %}
+    <div class="col-sm-auto">
+    <form id = "form-id" action="{% url 'ask' %}" method="get">
+    {% csrf_token %}
+    <input name="words" value="{{ not_found_words }}" type="hidden">
+    <a href="#" class="btn btn-outline-secondary " onclick="document.forms['form-id'].submit();" >Get!</a> 
+    </form>
+    </div>
+{% endif %}
+  </div>
 </div>
-    <br>
+<br>
 
+<p>
     <h3>for testing</h3>
     <ul>
-    <li>Type "@list" to show all DB entries</li>
+    <li>Type "@list" to show DB entries</li>
     </ul>
-    
+    </p>
+
 {% if object_list %}
     <h3>Entries found</h3>
-    <table border="1">
-        <tr>
-            <th>Words</th>
-            <th>Data</th>
-            <th>Owner</th>
-            <th>Begin date</th>
-            <th>Expire date</th>
-        </tr>
+<table class="table">
+  <thead class="thead-dark"><tr>
+            <th scope="col">Words</th>
+            <th scope="col">Data</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Count</th>
+            <th scope="col">Begin date</th>
+            <th scope="col">Expire date</th>
+        </tr></thead>
+  <tbody>
+    <tr>
         {% for item in object_list %}
         <tr>
             <td>{{ item.words_text }}</td>
             <td>{{ item.data_text }}</td>
             <td>{{ item.owner }}</td>
+            <td>{{ item.count }}</td>
             <td>{{ item.begin_date }}</td>
             <td>{{ item.end_date }}</td>
         </tr>
         {% endfor %}
+        </tbody>
     </table>
 {% endif %}
+
 
 {% endblock content %}

@@ -31,13 +31,3 @@
   background-color: #2196F3;
   color: white;
 }
-
-/* Style the search box inside the navigation bar */
-.mainbox input[type=text] {
-  float: center;
-  padding: 6px;
-  margin-top: 8px;
-  margin-right: 16px;
-  font-size: 17px;
-  border: 1px solid #ddd;
-}
