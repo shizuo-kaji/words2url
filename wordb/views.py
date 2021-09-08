@@ -89,7 +89,7 @@ def ask(request):
             object_list = Item.objects.filter(Q(words_text__iexact=post.words_text) & Q(end_date__gte=post.begin_date))
             if len(object_list)>0: # the key is already taken
                 messages.error(request, 'The Words are already taken.')
-                return render(request, 'wordb/form.html', {'form': form, 'taken_till':object_list[0].end_date})
+                return render(request, 'wordb/item_ask.html', {'form': form, 'taken_till':object_list[0].end_date})
             else:
                 if post.length==1:
                     post.end_date = post.begin_date + datetime.timedelta(days=1)
@@ -109,9 +109,10 @@ def ask(request):
         init_params = {'words_text': words,
                                  'editkey': pass_gen(20),
                                  'begin_date': timezone.now(),
+                                 'length': 3
                                  }
         form = ItemForm(initial=init_params)
-    return render(request, 'wordb/form.html', {'form': form, 'words':words})
+    return render(request, 'wordb/item_ask.html', {'form': form, 'words':words})
 
 
 def edit(request, pk):
@@ -150,7 +151,9 @@ def edit(request, pk):
 
     return redirect('update')
 
-
+def about(request):
+        return render(request, 'wordb/about.html')
+    
 def index(request):
     q_word = request.GET.get('query')
     if hasattr(request, 'session'):

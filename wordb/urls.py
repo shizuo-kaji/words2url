@@ -9,4 +9,5 @@ urlpatterns = [
     #path('update/<int:pk>/', views.ItemUpdateView.as_view(), name='update'),
     path('update/', views.ItemFilterEditkeyView.as_view(), name='update'),
     path('list/', views.ItemFilterView.as_view(), name='list'),
+    path('about/', views.about, name='about'),
 ]

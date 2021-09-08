@@ -1,0 +1,147 @@
+{% extends './base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class='container'>
+<p>
+<em>Words2URL</em> is a simple service that associates your favourite <em>Word</em> to <em>Data</em> such as
+URL, text, and short HTML.
+</p>
+<p>
+Type "google" and you are taken to the famous search engine, as expected.<br>
+Type "penguin" if you like the birds.
+</p>
+<p>
+Our service is meant to be used, for example, as a shared/personal bookmark, 
+a pointer to your product page,
+an online business card, and an online meeting URL opener.
+</p>
+<p>
+You do not have to memorise a complicated URL but just keep your favourite Word.
+<br>
+You do not have to text a long URL but just tell your Word in person or over the phone.
+<br>
+Your tweet looks nicer with Word than with a cryptic URL with a lot of %'s.
+</p>
+<p>
+It is similar to the QR code but requires no camera or paper. 
+All you need is your voice to tell Word.
+<p>
+<em>Word-Data</em> pairs can be registered at <a href="{% url 'ask'%}">Ask</a> on a first-come-first-served basis.
+Each Word is valid only for a certain period.
+The period can be extended at <a href="{% url 'update'%}">Edit</a> using <em>Editkey</em> chosen at the creation time.
+The associated <em>Data</em> can also be modified in the same manner.
+</p>
+
+<p>
+Technically, it returns pure text for a GET request like '?query=Words' so that it can be used as a certain API.
+For example, you can store XML and retrive from your service.
+We hope to see interesting applications.
+</p>
+</div>
+
+<div id="smart-button-container">
+      <div style="text-align: center;">
+        <div style="margin-bottom: 1.25rem;">
+          <p>Like Words2URL?
+Please click below to support us.</p>
+          <select id="item-options"><option value="" price="1"> - 1 USD</option><option value="" price="5"> - 5 USD</option><option value="" price="10"> - 10 USD</option><option value="" price="20"> - 20 USD</option></select>
+          <select style="visibility: hidden" id="quantitySelect"></select>
+        </div>
+      <div id="paypal-button-container"></div>
+      </div>
+    </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+    <script>
+      function initPayPalButton() {
+        var shipping = 0;
+        var itemOptions = document.querySelector("#smart-button-container #item-options");
+    var quantity = parseInt();
+    var quantitySelect = document.querySelector("#smart-button-container #quantitySelect");
+    if (!isNaN(quantity)) {
+      quantitySelect.style.visibility = "visible";
+    }
+    var orderDescription = 'Like Words2URL? Please support us from below.';
+    if(orderDescription === '') {
+      orderDescription = 'Item';
+    }
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'paypal',
+        
+      },
+      createOrder: function(data, actions) {
+        var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
+        var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
+        var tax = (0 === 0 || false) ? 0 : (selectedItemPrice * (parseFloat(0)/100));
+        if(quantitySelect.options.length > 0) {
+          quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
+        } else {
+          quantity = 1;
+        }
+
+        tax *= quantity;
+        tax = Math.round(tax * 100) / 100;
+        var priceTotal = quantity * selectedItemPrice + parseFloat(shipping) + tax;
+        priceTotal = Math.round(priceTotal * 100) / 100;
+        var itemTotalValue = Math.round((selectedItemPrice * quantity) * 100) / 100;
+
+        return actions.order.create({
+          purchase_units: [{
+            description: orderDescription,
+            amount: {
+              currency_code: 'USD',
+              value: priceTotal,
+              breakdown: {
+                item_total: {
+                  currency_code: 'USD',
+                  value: itemTotalValue,
+                },
+                shipping: {
+                  currency_code: 'USD',
+                  value: shipping,
+                },
+                tax_total: {
+                  currency_code: 'USD',
+                  value: tax,
+                }
+              }
+            },
+            items: [{
+              name: selectedItemDescription,
+              unit_amount: {
+                currency_code: 'USD',
+                value: selectedItemPrice,
+              },
+              quantity: quantity
+            }]
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(orderData) {
+          
+          // Full available details
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+          // Show a success message within this page, e.g.
+          const element = document.getElementById('paypal-button-container');
+          element.innerHTML = '';
+          element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+          // Or go to another URL:  actions.redirect('thank_you.html');
+
+        });
+      },
+      onError: function(err) {
+        console.log(err);
+      },
+    }).render('#paypal-button-container');
+  }
+  initPayPalButton();
+    </script>
+
+{% endblock %}
