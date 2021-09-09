@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 django-crispy-forms
 django-filter
+newrelic
