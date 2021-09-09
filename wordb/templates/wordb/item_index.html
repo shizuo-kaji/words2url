@@ -1,15 +1,20 @@
 {% extends './base.html' %}
 
 {% block content %}
+{% load static %}
 
 <div class="container">
   <div class="row justify-content-md-center">
     <div class="col-sm-auto">
     <form action="" method="get">
-        <input name="query" value="{{ request.GET.query }}" type="text" placeholder="penguin">
+        <input name="query" value="{{ request.GET.query }}" type="text" placeholder="penguin" id="searchBox">
         <button type="submit" class="btn btn-success">Go!</button>
     </form>
     </div>
+  <div class="col-sm-auto">
+      <button onclick="startConverting()" class='btn btn-info' id="speakBtn">Speak</button>
+  </div>
+    
 {% if not_found_words %}
     <div class="col-sm-auto">
     <form id = "form-id" action="{% url 'ask' %}" method="get">
@@ -21,8 +26,8 @@
 {% endif %}
   </div>
 </div>
-<br>
 
+<script src="{% static 'wordb/speech.js' %}"></script>
 
 {% if object_list %}
     <h3>Entries found</h3>
