@@ -74,10 +74,21 @@ class ItemFilterView(FilterView):
         return super().get(request, **kwargs)
 
 
+def normaliseWords(q_word, modifier="@*@"):
+    flags = dict()
+    words = []
+    
+    for w in q_word.split():
+        if w.startswith(modifier):
+            flags[w[len(modifier):]] = True
+        else:
+            words.append(w)
+    return(" ".join(words), flags)
+
 def pass_gen(size=12):
-   chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
-   chars += '%&$#()'
-   return ''.join(secrets.choice(chars) for x in range(size))
+    chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    chars += '%&$#()'
+    return ''.join(secrets.choice(chars) for x in range(size))
 
 def ask(request):
     words = request.GET.get('words')
@@ -85,6 +96,8 @@ def ask(request):
         form = ItemForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
+            words, flags = normaliseWords(post.words_text)
+            post.words_text = words
             #print(post.begin_date)
             object_list = Item.objects.filter(Q(words_text__iexact=post.words_text) & Q(end_date__gte=post.begin_date))
             if len(object_list)>0: # the key is already taken
@@ -123,7 +136,6 @@ def edit(request, pk):
         if 'editkey' in request.session['query'].keys():
             editkey = request.session['query']['editkey']
         
-    print(pk,item,request.method)
     if editkey != item.editkey:
         messages.error(request, 'wrong editkey')
         return redirect('update')
@@ -131,7 +143,8 @@ def edit(request, pk):
         form = ItemEditForm(request.POST, instance=item)
         if form.is_valid():
             post = form.save(commit=False)
-            print(post.length)
+            words, flags = normaliseWords(post.words_text)
+            post.words_text = words
             # extend rental duration
             if post.length==1:
                 post.end_date = post.end_date + datetime.timedelta(days=1)
@@ -164,16 +177,7 @@ def index(request):
     #print(q_word)
     if not q_word:
         return render(request, 'wordb/item_index.html', {'object_list':[]})
-    q_word = q_word.split()
-    flags = dict()
-    words = []
-    for w in q_word:
-        if w[0] == "@": # modifier
-            flags[w[1:]] = True
-        else:
-            words.append(w)
-
-    words = " ".join(words)
+    words, flags = normaliseWords(q_word)
 
     #print("key: ",q_word)
     object_list = Item.objects.filter(Q(words_text__iexact=words) & Q(end_date__gte=timezone.now()))
