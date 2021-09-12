@@ -128,11 +128,14 @@ def pass_gen(size=12):
 def linebot(request):
     if request.method == 'POST':
         request_json = json.loads(request.body.decode('utf-8'))
-        data = request_json['events'][0]
+        events = request_json['events']
+        if len(events)==0: # not message received
+            return HttpResponse("ok")
+        data = events[0]
         reply_token = data['replyToken']
         words = data['message']['text']
         #words = request.POST.get('message')
-        redirect_url = reverse('index')
+        redirect_url = request.build_absolute_uri(reverse('index'))
         parameters = urlencode({'words': words})
         url = f'{redirect_url}?{parameters}'
         messages =  [{'type': 'text',
