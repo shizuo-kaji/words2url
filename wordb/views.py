@@ -12,6 +12,8 @@ from django_filters.views import FilterView
 from django.contrib import messages
 import datetime
 from urllib.parse import urlencode
+import urllib.request
+import json
 import string,secrets
 
 from .filters import ItemFilter, ItemFilterEditkey
@@ -74,6 +76,33 @@ class ItemFilterView(FilterView):
         return super().get(request, **kwargs)
 
 
+class LineMessage():
+    def __init__(self, messages):
+        self.messages = messages
+        self.REPLY_ENDPOINT_URL = "https://api.line.me/v2/bot/message/reply"
+        self.ACCESSTOKEN = "YNMkV3odM2lXeGD8An5xjABbX7Bj+NsNO6T/bTzeUWnTPSgYt+1K9V8TsYdfU5VpIXgMiWjrAjZK6dIGqtfJCNWK3Wi02alzYQyI2ypEgNsNl4ZL5TRHoi7uQyI5+5/0q7NkPJ3D7N9nAzoA3RlgxAdB04t89/1O/w1cDnyilFU="
+        self.HEADER = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + self.ACCESSTOKEN
+        }
+
+    def reply(self, reply_token):
+        body = {
+            'replyToken': reply_token,
+            'messages': self.messages
+        }
+        print(body)
+        req = urllib.request.Request(self.REPLY_ENDPOINT_URL, json.dumps(body).encode(), self.HEADER)
+        try:
+            with urllib.request.urlopen(req) as res:
+                body = res.read()
+        except urllib.error.HTTPError as err:
+            print(err)
+        except urllib.error.URLError as err:
+            print(err.reason)
+
+
+## normalise Words (remove double space etc)
 def normaliseWords(q_word, modifier="@*@"):
     flags = dict()
     words = []
@@ -85,10 +114,37 @@ def normaliseWords(q_word, modifier="@*@"):
             words.append(w)
     return(" ".join(words), flags)
 
+## password-like strings generator for default Editkey
 def pass_gen(size=12):
     chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
     chars += '%&$#()'
     return ''.join(secrets.choice(chars) for x in range(size))
+
+
+####### Views
+def linebot(request):
+    if request.method == 'POST':
+        request_json = json.loads(request.body.decode('utf-8'))
+        data = request_json['events'][0]
+        reply_token = data['replyToken']
+        words = data['message']['text']
+        #words = request.POST.get('message')
+        redirect_url = reverse('index')
+        parameters = urlencode({'words': words})
+        url = f'{redirect_url}?{parameters}'
+        messages =  [{'type': 'text',
+                'text': 'Jump to '.format(words),
+                'quickReply': {"items": [{
+                        "type": "action",
+                        "action": {
+                            "type": "uri",
+                            "label": "Jump",
+                            "uri": url
+                        }
+                    }]}}]
+        line_message = LineMessage(messages)
+        line_message.reply(reply_token)
+    return HttpResponse("ok")
 
 def ask(request):
     words = request.GET.get('words')
@@ -170,6 +226,8 @@ def about(request):
             messages.success(request, 'Thank you for your support!')
     return render(request, 'wordb/about.html')
     
+
+# showing searchbox and handling search query
 def index(request):
     q_word = request.GET.get('query')
     if hasattr(request, 'session'):
@@ -184,10 +242,6 @@ def index(request):
     if 'admin' in flags.keys():
         return redirect('admin:index')
     elif len(object_list)==0 and not 'list' in flags.keys():
-        # redirect_url = reverse('ask')
-        # parameters = urlencode({'words': words})
-        # url = f'{redirect_url}?{parameters}'
-        # return(redirect(url))
         messages.error(request, '{} not found'.format(words))
         return render(request, 'wordb/item_index.html', {'object_list':object_list, 'not_found_words': words})
     elif 'list' in flags.keys():

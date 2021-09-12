@@ -29,32 +29,4 @@
 
 <script src="{% static 'wordb/speech.js' %}"></script>
 
-{% if object_list %}
-    <h3>Entries found</h3>
-<table class="table">
-  <thead class="thead-dark"><tr>
-            <th scope="col">Words</th>
-            <th scope="col">Data</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Count</th>
-            <th scope="col">Begin date</th>
-            <th scope="col">Expire date</th>
-        </tr></thead>
-  <tbody>
-    <tr>
-        {% for item in object_list %}
-        <tr>
-            <td>{{ item.words_text }}</td>
-            <td>{{ item.data_text }}</td>
-            <td>{{ item.owner }}</td>
-            <td>{{ item.count }}</td>
-            <td>{{ item.begin_date }}</td>
-            <td>{{ item.end_date }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-
-
 {% endblock content %}
