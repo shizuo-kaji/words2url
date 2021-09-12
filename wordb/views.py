@@ -136,10 +136,10 @@ def linebot(request):
         words = data['message']['text']
         #words = request.POST.get('message')
         redirect_url = request.build_absolute_uri(reverse('index'))
-        parameters = urlencode({'words': words})
+        parameters = urlencode({'query': words})
         url = f'{redirect_url}?{parameters}'
         messages =  [{'type': 'text',
-                'text': 'Jump to '.format(words),
+                'text': 'Jump to {}'.format(words),
                 'quickReply': {"items": [{
                         "type": "action",
                         "action": {
