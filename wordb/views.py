@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 from urllib.parse import urlencode
 import urllib.request
-import json
+import json,re
 import string,secrets
 
 from .filters import ItemFilter, ItemFilterEditkey
@@ -105,16 +105,26 @@ class LineMessage():
 
 
 ## normalise Words (remove double space etc)
-def normaliseWords(q_word, modifier="@*@"):
+def normaliseWords(q_word, modifier="@"):
     flags = dict()
     words = []
-    
-    for w in q_word.split():
+
+    # replace symbols with space
+    clean_words = re.sub(r'[^\w%@-]', r' ', q_word)
+    # replace ZENKAKU symbols with space
+    clean_words = re.sub(u'[■-♯]', ' ', clean_words)
+
+    for w in clean_words.lower().split():
         if w.startswith(modifier):
             flags[w[len(modifier):]] = True
         else:
             words.append(w)
     return(" ".join(words), flags)
+
+## check if the given string is URL
+def is_url(text) :
+    URL_PTN = re.compile(r"^(http|https)://")
+    return URL_PTN.match(text)
 
 ## password-like strings generator for default Editkey
 def pass_gen(size=12):
@@ -251,9 +261,10 @@ def index(request):
         messages.error(request, '{} not found'.format(words))
         return render(request, 'wordb/item_index.html', {'object_list':object_list, 'not_found_words': words})
     elif 'list' in flags.keys():
-        object_list = Item.objects.filter(Q(words_text__icontains=words))
-        #object_list = Item.objects.all()
-        return render(request, 'wordb/item_list.html', {'object_list':object_list})
+        redirect_url = reverse('list')
+        parameters = urlencode({'words_text': words})
+        url = f'{redirect_url}?{parameters}'
+        return redirect(url)
     elif len(object_list)==1: # hit and show
         item = object_list[0]
         item.count = F('count') + 1
