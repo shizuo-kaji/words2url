@@ -10,6 +10,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q,F
 from django_filters.views import FilterView
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+
 import datetime
 from urllib.parse import urlencode
 import urllib.request
@@ -122,6 +124,7 @@ def pass_gen(size=12):
 
 
 ####### Views
+@csrf_exempt
 def linebot(request):
     if request.method == 'POST':
         request_json = json.loads(request.body.decode('utf-8'))
