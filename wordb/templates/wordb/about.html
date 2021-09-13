@@ -4,6 +4,8 @@
 
 {% block content %}
 <div class='container'>
+
+<h2>What is Words2URL</h2>
 <p>
 <em>Words2URL</em> is a simple online service that associates your favourite <em>Word</em> (or phrase) to <em>Data</em> such as
 URL, text, and short HTML.
@@ -27,19 +29,65 @@ Your tweet looks nicer with Word than with a cryptic URL of the fun video.
 <p>
 It is similar to the QR code but requires no camera or paper. 
 All you need is your voice to tell Word.
+</p>
+
+
+
+<h2>How to use</h2>
+<p>
+Just type or speak your Word at <a href="{% url 'index'%}">Home</a>, and you will be taken to the information associated to the Word.
+</p>
+
 <p>
 <em>Word-Data</em> pairs can be registered at <a href="{% url 'ask'%}">Ask page</a> on a first-come-first-served basis.
 Each Word is valid only for a certain period.
 The period can be extended at <a href="{% url 'update'%}">Edit page</a> using <em>Editkey</em> chosen at the creation time.
 The associated <em>Data</em> can also be modified in the same manner.
 </p>
+<p>
+Note that symbols and double spaces in Word are replaced by a single space.
+</p>
 
 <p>
-Technically, it returns pure text for a GET request like '?query=Words' so that it can be used as a certain API.
+Use Words2URL from LINE(bot):
+<a href="https://lin.ee/TXtNdyf"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="Add to LINE" height="36" border="0"></a>                
+</p>
+
+<h2>Further usage</h2>
+The service returns pure text for a GET request like '?query=Words' so that it can be used as a certain API.
 For example, you can store XML and retrive from your service.
 We hope to see interesting applications.
+
+
+<h2>Support us</h2>
+<p>
+Please let us know how you like it:
+<a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet"
+  data-url="https://words2url.herokuapp.com" data-hashtags="words2url">
+Tweet</a>
 </p>
+
+
 </div>
+
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
 
 <!--
 <p>If you like Words2URL, please support us from below.</p>
