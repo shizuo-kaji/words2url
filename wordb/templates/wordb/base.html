@@ -18,6 +18,16 @@
   <link rel="apple-touch-icon" sizes="152x152" href="{% static 'wordb/apple-touch-icon.png' %}">
   <meta name="apple-mobile-web-app-title" content="Words2URL" />
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4B29PPNJ50"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-4B29PPNJ50');
+  </script>
+
   {% if request.get_full_path == "/" or request.get_full_path == "/wordb/" %}
     <script type="application/ld+json">
     {
