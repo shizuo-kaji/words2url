@@ -11,4 +11,5 @@ urlpatterns = [
     path('list/', views.ItemFilterView.as_view(), name='list'),
     path('about/', views.about, name='about'),
     path('linebot/', views.linebot, name='linebot'),
+    path('test/', views.test, name='test'),
 ]

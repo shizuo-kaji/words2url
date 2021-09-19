@@ -276,7 +276,10 @@ def index(request):
             
     return render(request, 'wordb/item_index.html', {'object_list':object_list})
 
-
+## testing url
+def test(request):
+    msg = "google-site-verification: google28cb9145886e77d6.html"
+    return HttpResponse(msg)
 
 ##
 def dummy_add_key(request):
