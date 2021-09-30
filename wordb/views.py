@@ -164,7 +164,27 @@ def linebot(request):
 
 def ask(request):
     words = request.GET.get('words')
-    if request.method == 'POST':
+    assocURL = request.GET.get('assocURL')
+    if assocURL: # transition from Index page
+        words, flags = normaliseWords(words)
+        bdate = timezone.now()
+        if not is_url(assocURL):
+            assocURL = "https://"+assocURL
+        object_list = Item.objects.filter(Q(words_text__iexact=words) & Q(end_date__gte=bdate))
+        if len(object_list)>0: # the key is already taken
+            messages.error(request, 'The Words are already taken.')
+        else:
+            item = Item.objects.create(
+                words_text = words,
+                owner = 'nobody',
+                data_text = assocURL,
+                begin_date = bdate,
+                end_date = bdate + datetime.timedelta(days=31),
+            )
+            item.save()
+            messages.success(request, 'successfully registered "{}"'.format(words))
+        return redirect('/')
+    elif request.method == 'POST': # transition from Add page
         form = ItemForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)

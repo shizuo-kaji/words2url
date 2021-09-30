@@ -6,26 +6,34 @@
 <div class="container">
   <div class="row justify-content-md-center">
     <div class="col-sm-auto">
-    <form action="" method="get">
-        <input name="query" value="{{ request.GET.query }}" type="text" placeholder="penguin" id="searchBox">
-        <button type="submit" class="btn btn-success">Go!</button>
-    </form>
+      <form action="" method="get">
+        <label for="searchBox">Enter Words</label>
+          <input name="query" value="{{ request.GET.query }}" type="text" placeholder="penguin" id="searchBox">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-primary">Go!</button>
+            <button onclick="startConverting()" class='btn btn-info' id="speakBtn">Voice</button>
+          </div>
+      </form>
     </div>
-  <div class="col-sm-auto">
-      <button onclick="startConverting()" class='btn btn-info' id="speakBtn">Speak</button>
   </div>
-    
+
 {% if not_found_words %}
+  <div class="row justify-content-md-center">
     <div class="col-sm-auto">
-    <form id = "form-id" action="{% url 'ask' %}" method="get">
-    {% csrf_token %}
-    <input name="words" value="{{ not_found_words }}" type="hidden">
-    <a href="#" class="btn btn-outline-secondary " onclick="document.forms['form-id'].submit();" >Get!</a> 
-    </form>
+      <form id = "form-id" action="{% url 'ask' %}" method="get">
+      {% csrf_token %}
+      <input name="words" value="{{ not_found_words }}" type="hidden">
+      <label for="wordBox">Get "{{ not_found_words }}"</label>
+      <input name="assocURL" value="" type="text" placeholder="https://google.com" id="wordBox">
+      </form>
     </div>
-{% endif %}
+    <div class="col-sm-auto">
+      <a href="#" class="btn btn-secondary" onclick="document.forms['form-id'].submit();" >Get!</a> 
+    </div>
   </div>
+{% endif %}
 </div>
+
 
 <script src="{% static 'wordb/speech.js' %}"></script>
 

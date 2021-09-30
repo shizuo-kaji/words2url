@@ -16,7 +16,7 @@ class ItemForm(ModelForm):
         }
         widgets = {
             'words_text': TextInput(attrs={'size':'40', 'title': 'Words'}),
-            'data_text': TextInput(attrs={'size':'40', 'title': 'Data'}),   #attrs={'row': 1, 'maxlength': 200}),
+            'data_text': TextInput(attrs={'size':'40', 'title': 'Associated URL'}),   #attrs={'row': 1, 'maxlength': 200}),
             'owner': TextInput(attrs={'size':'40'}),
             #'begin_date': widgets.DateInput(attrs={'type': 'date'}),
             'begin_date': widgets.HiddenInput(),
@@ -37,7 +37,7 @@ class ItemEditForm(ModelForm):
         exclude = ()
         labels = {
             "words_text": "Words",
-            "data_text": "Associated data"
+            "data_text": "Associated URL"
         }
         widgets = {
             'data_text': TextInput(attrs={'size':'40'}),   #attrs={'row': 1, 'maxlength': 200}),
