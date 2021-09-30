@@ -9,11 +9,11 @@
       <form action="" method="get">
         <label for="searchBox">Enter Words</label>
           <input name="query" value="{{ request.GET.query }}" type="text" placeholder="penguin" id="searchBox">
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="submit" class="btn btn-primary">Go!</button>
-            <button onclick="startConverting()" class='btn btn-info' id="speakBtn">Voice</button>
-          </div>
+          <button type="submit" class="btn btn-primary">Go!</button>
       </form>
+    </div>
+    <div class="col-sm-auto">
+            <button onclick="startConverting()" class='btn btn-info' id="speakBtn">Voice</button>
     </div>
   </div>
 
