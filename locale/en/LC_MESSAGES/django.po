@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-29 20:28+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: wordb/models.py:6
+msgid "Owner"
+msgstr ""
+
+#: wordb/models.py:7
+msgid "Words"
+msgstr ""
+
+#: wordb/models.py:8
+msgid "Data"
+msgstr ""
+
+#: wordb/models.py:9
+msgid "Editkey"
+msgstr ""
+
+#: wordb/models.py:10
+msgid "commencement date"
+msgstr ""
+
+#: wordb/models.py:11
+msgid "expiration date"
+msgstr ""
+
+#: wordb/models.py:12
+msgid "click count"
+msgstr ""
+
+#: wordb/models.py:15
+msgid "duration"
+msgstr ""
+
+#: wordb/templates/wordb/base.html:65
+msgid "Home"
+msgstr ""
+
+#: wordb/templates/wordb/base.html:68
+msgid "Add"
+msgstr ""
+
+#: wordb/templates/wordb/base.html:71
+msgid "List"
+msgstr ""
+
+#: wordb/templates/wordb/base.html:74
+msgid "Edit"
+msgstr ""
+
+#: wordb/templates/wordb/item_ask.html:7
+msgid "is already taken until"
+msgstr ""
+
+#: wordb/templates/wordb/item_ask.html:10
+msgid "Register your Words"
+msgstr ""
+
+#: wordb/templates/wordb/item_index.html:12
+msgid "enter words, e.g., penguin"
+msgstr ""
+
+#: wordir/settings.py:122
+msgid "English"
+msgstr ""
+
+#: wordir/settings.py:123
+msgid "Japanese"
+msgstr ""

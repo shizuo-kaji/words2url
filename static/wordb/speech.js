@@ -1,11 +1,14 @@
-function startConverting()
+function startConverting(lang)
 {              
   document.getElementById("speakBtn").style.visibility = "hidden";   
   var r=document.getElementById('searchBox');
-  var recognition=new webkitSpeechRecognition(); //Initialisation of web Kit
+  var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition || null;
+  const recognition = new SpeechRecognition();
+  //var recognition=new webkitSpeechRecognition(); //Initialisation of web Kit
   recognition.continuous=false; //True if continous conversion is needed, false to stop transalation when paused 
   recognition.interimResults=true;
-  recognition.lang='en-US';
+  //recognition.lang=lang; //'en-US'
+  //recognition.lang = 'ja-JP';
   recognition.start();
   var ftr='';
   recognition.onresult=function(event){

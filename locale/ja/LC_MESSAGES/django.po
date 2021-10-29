@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-29 21:51+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: wordb/filters.py:25 wordb/filters.py:35 wordb/filters.py:54
+#: wordb/filters.py:63 wordb/models.py:7
+#: wordb/templates/wordb/item_filter.html:52
+#: wordb/templates/wordb/item_list.html:52
+msgid "Words"
+msgstr "ワード"
+
+#: wordb/filters.py:26 wordb/filters.py:36 wordb/filters.py:55
+#: wordb/filters.py:64 wordb/models.py:8
+#: wordb/templates/wordb/item_list.html:84
+msgid "Data"
+msgstr "URL"
+
+#: wordb/filters.py:27 wordb/filters.py:56 wordb/models.py:6
+#: wordb/templates/wordb/item_list.html:76
+msgid "Owner"
+msgstr "所有者"
+
+#: wordb/filters.py:28 wordb/models.py:9
+msgid "Editkey"
+msgstr "編集パスワード"
+
+#: wordb/filters.py:38 wordb/filters.py:66
+msgid "sorting order"
+msgstr "並び替え順"
+
+#: wordb/form.py:9
+msgid "Duration"
+msgstr "期間"
+
+#: wordb/form.py:35
+msgid "Extend"
+msgstr "延長"
+
+#: wordb/models.py:10
+msgid "commencement date"
+msgstr "開始日"
+
+#: wordb/models.py:11
+msgid "expiration date"
+msgstr "終了日"
+
+#: wordb/models.py:12
+msgid "click count"
+msgstr "クリック数"
+
+#: wordb/models.py:14
+msgid "none"
+msgstr "無し"
+
+#: wordb/models.py:14
+msgid "day"
+msgstr "１日"
+
+#: wordb/models.py:14
+msgid "week"
+msgstr "１週間"
+
+#: wordb/models.py:14
+msgid "month"
+msgstr "１ヶ月"
+
+#: wordb/models.py:14
+msgid "year"
+msgstr "１年"
+
+#: wordb/models.py:15
+msgid "duration"
+msgstr "期間"
+
+#: wordb/templates/wordb/base.html:65
+msgid "Home"
+msgstr ""
+
+#: wordb/templates/wordb/base.html:68
+msgid "Add"
+msgstr "登録"
+
+#: wordb/templates/wordb/base.html:71
+msgid "List"
+msgstr "一覧"
+
+#: wordb/templates/wordb/base.html:74
+msgid "Edit"
+msgstr "編集"
+
+#: wordb/templates/wordb/item_ask.html:7
+msgid "is already taken until"
+msgstr "は既に次の日時まで登録されています："
+
+#: wordb/templates/wordb/item_ask.html:10
+msgid "Register your Words"
+msgstr "新しいワードを登録"
+
+#: wordb/templates/wordb/item_ask.html:12
+#: wordb/templates/wordb/item_edit.html:9
+msgid "Valid from"
+msgstr "開始日"
+
+#: wordb/templates/wordb/item_ask.html:17
+#: wordb/templates/wordb/item_edit.html:15
+msgid "Submit"
+msgstr "登録"
+
+#: wordb/templates/wordb/item_edit.html:6
+msgid "Edit entry for"
+msgstr "ワードの編集"
+
+#: wordb/templates/wordb/item_edit.html:10
+#: wordb/templates/wordb/item_filter.html:60
+#: wordb/templates/wordb/item_list.html:60
+msgid "Valid until"
+msgstr "終了日"
+
+#: wordb/templates/wordb/item_edit.html:16
+msgid "Delete"
+msgstr "削除"
+
+#: wordb/templates/wordb/item_filter.html:6
+msgid ""
+"To edit your Words, search using <em>editkey</em> that you chose when you "
+"registered the Words."
+msgstr ""
+"登録時に設定したパスワードを入力すると，対応するワードの一覧が出て編集可能と"
+"なります．"
+
+#: wordb/templates/wordb/item_filter.html:34
+#: wordb/templates/wordb/item_list.html:34
+msgid "New Search"
+msgstr "新規検索"
+
+#: wordb/templates/wordb/item_filter.html:69
+msgid "edit"
+msgstr "編集"
+
+#: wordb/templates/wordb/item_filter.html:76
+#: wordb/templates/wordb/item_list.html:102
+msgid "No entries found"
+msgstr "見つかりませんでした"
+
+#: wordb/templates/wordb/item_index.html:12
+msgid "enter words, e.g., penguin"
+msgstr "ここに単語を入力"
+
+#: wordb/templates/wordb/item_index.html:17
+msgid "Voice"
+msgstr "音声"
+
+#: wordb/templates/wordb/item_index.html:27
+msgid "Get"
+msgstr "次を取得："
+
+#: wordb/templates/wordb/item_list.html:6
+msgid "Search non-expired Words"
+msgstr "有効なワードの検索"
+
+#: wordb/templates/wordb/item_list.html:68
+msgid "Count"
+msgstr "クリック数"
+
+#: wordb/templates/wordb/item_list.html:95
+msgid "Show"
+msgstr "表示"
+
+#: wordir/settings.py:122
+msgid "English"
+msgstr ""
+
+#: wordir/settings.py:123
+msgid "Japanese"
+msgstr ""

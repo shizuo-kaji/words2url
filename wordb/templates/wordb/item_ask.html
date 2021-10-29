@@ -1,20 +1,20 @@
 {% extends 'wordb/base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
 {% if taken_till %}
-   <h3> "{{form.words_text.value}}" is already taken
-   until {{taken_till}}</h3>
+   <h3> "{{form.words_text.value}}" {% trans "is already taken until" %} {{taken_till}}</h3>
 {% endif %}
 <div class="entry_input">
- <h2 class="mt-2">Register your Words</h2>
+ <h2 class="mt-2">{% trans "Register your Words" %}</h2>
   <ul class="list-group">
-<li>Valid from: {{form.begin_date.value}}</li>
+<li>{% trans "Valid from" %} {{form.begin_date.value}}</li>
 </ul>
   <form method="POST">
     {% csrf_token %}
-   {{ form|crispy }}    
-    <button type="submit" class="btn btn-success">Submit</button>
+   {{ form|crispy }}
+    <button type="submit" class="btn btn-success">{% trans "Submit" %}</button>
   </form>
 </div>
 {% endblock %}

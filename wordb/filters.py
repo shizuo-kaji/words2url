@@ -1,12 +1,12 @@
 from django_filters import filters
 from django_filters import FilterSet
 from .models import Item
+from django.utils.translation import ugettext_lazy as _
 
 class MyCharFilter(filters.CharFilter):
     empty_value = ''
 
     def filter(self, qs, value):
-        print(value)
         if value != self.empty_value:
             return super().filter(qs, value)
         else:
@@ -17,23 +17,25 @@ class MyCharFilter(filters.CharFilter):
 class MyOrderingFilter(filters.OrderingFilter):
     descending_fmt = '%s (descending)'
 
+
+## search with Editkey for modification
 class ItemFilterEditkey(FilterSet):
     template_name = "item_filter.html"
 
-    words_text = filters.CharFilter(label='Words', lookup_expr='contains')
-    data_text = filters.CharFilter(label='Data', lookup_expr='contains')
-    owner = filters.CharFilter(label='Owner', lookup_expr='contains')
-    editkey = MyCharFilter(label='Editkey', lookup_expr='exact')
+    words_text = filters.CharFilter(label=_('Words'), lookup_expr='contains')
+    data_text = filters.CharFilter(label=_('Data'), lookup_expr='contains')
+    owner = filters.CharFilter(label=_('Owner'), lookup_expr='contains')
+    editkey = MyCharFilter(label=_('Editkey'), lookup_expr='exact')
     order_by = MyOrderingFilter(
         fields=(
             ('words_text', 'words_text'),
             ('data_text', 'data_text'),
         ),
         field_labels={
-            'words_text': 'words',
-            'data_text': 'data',
+            'words_text': _('Words'),
+            'data_text': _('Data'),
         },
-        label='sorting order'
+        label=_('sorting order')
     )
 
     class Meta:
@@ -46,20 +48,22 @@ class ItemFilterEditkey(FilterSet):
         if self.data == {}:
             self.queryset = self.queryset.none()
 
+
+## simple search
 class ItemFilter(FilterSet):
-    words_text = filters.CharFilter(label='Words', lookup_expr='contains')
-    data_text = filters.CharFilter(label='Data', lookup_expr='contains')
-    owner = filters.CharFilter(label='Owner', lookup_expr='contains')
+    words_text = filters.CharFilter(label=_('Words'), lookup_expr='contains')
+    data_text = filters.CharFilter(label=_('Data'), lookup_expr='contains')
+    owner = filters.CharFilter(label=_('Owner'), lookup_expr='contains')
     order_by = MyOrderingFilter(
         fields=(
             ('words_text', 'words_text'),
             ('data_text', 'data_text'),
         ),
         field_labels={
-            'words_text': 'words',
-            'data_text': 'data',
+            'words_text': _('Words'),
+            'data_text': _('Data'),
         },
-        label='sorting order'
+        label=_('sorting order')
     )
 
     class Meta:

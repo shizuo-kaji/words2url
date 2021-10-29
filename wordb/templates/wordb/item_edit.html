@@ -1,17 +1,19 @@
 {% extends './base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
- <h2 class="mt-2">Edit entry for "{{item.words_text}}"</h2>
+ <h2 class="mt-2">{% trans "Edit entry for" %} "{{item.words_text}}"</h2>
 <div class="entry_input">
   <ul class="list-group">
-<li>Valid from: {{item.begin_date}}</li>
-<li>Valid until: {{item.end_date}}</li>
+<li>{% trans "Valid from" %} {{item.begin_date}}</li>
+<li>{% trans "Valid until" %} {{item.end_date}}</li>
 </ul>
   <form method="POST">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" class="btn btn-success" value="submit">{% trans "Submit" %}</button>
+    <button type="submit" class="btn btn-success" value="delete">{% trans "Delete" %}</button>
   </form>
 </div>
 {% endblock %}
