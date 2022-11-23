@@ -1,7 +1,7 @@
 from django_filters import filters
 from django_filters import FilterSet
 from .models import Item
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 class MyCharFilter(filters.CharFilter):
     empty_value = ''

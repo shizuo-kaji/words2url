@@ -1,7 +1,7 @@
 from django.forms import ModelForm,DateField, widgets, Textarea, TextInput,CharField, ChoiceField, Select
 from django import forms
 from .models import Item
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 ## Registration form

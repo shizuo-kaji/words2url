@@ -86,7 +86,7 @@ class LineMessage():
     def __init__(self, messages):
         self.messages = messages
         self.REPLY_ENDPOINT_URL = "https://api.line.me/v2/bot/message/reply"
-        self.ACCESSTOKEN = "YNMkV3odM2lXeGD8An5xjABbX7Bj+NsNO6T/bTzeUWnTPSgYt+1K9V8TsYdfU5VpIXgMiWjrAjZK6dIGqtfJCNWK3Wi02alzYQyI2ypEgNsNl4ZL5TRHoi7uQyI5+5/0q7NkPJ3D7N9nAzoA3RlgxAdB04t89/1O/w1cDnyilFU="
+        self.ACCESSTOKEN = ""
         self.HEADER = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + self.ACCESSTOKEN
