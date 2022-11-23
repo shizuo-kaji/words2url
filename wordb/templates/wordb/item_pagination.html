@@ -11,7 +11,7 @@
     {% endif %}
     {% for page in page_obj.paginator.page_range %}
         {% if page %}
-            {% ifequal page page_obj.number %}
+            {% if page == page_obj.number %}
                 <li class="active page-item">
                     <span class="page-link">{{ page }}
                         <span class="page-link sr-only">(current)</span>
